@@ -1,0 +1,144 @@
+{% extends "core\base.html" %}
+{% block title %}Dashboard - Dental Center Management System{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Dashboard Layout Custom CSS */
+  body {
+      overflow-x: hidden;
+  }
+  #sidebar {
+      min-width: 250px;
+      max-width: 250px;
+      background: #343a40;
+      color: #fff;
+      transition: all 0.3s;
+  }
+  #sidebar .nav-link {
+      color: #fff;
+  }
+  #sidebar .nav-link:hover {
+      background: #495057;
+  }
+  #content {
+      width: 100%;
+      padding: 20px;
+  }
+  .sidebar-collapsed {
+      margin-left: -250px;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Top Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <button class="btn btn-outline-light" id="sidebarCollapse">
+      <i class="fas fa-bars"></i>
+    </button>
+    <a class="navbar-brand ms-3" href="#">Dental Center</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavBar" aria-controls="topNavBar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="topNavBar">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="{% url 'hr:employee_list' %}"><i class="fas fa-users"></i> HR</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'reports:report_list' %}"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'users:user_list' %}"><i class="fas fa-user"></i> Users</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="d-flex">
+  <!-- Sidebar -->
+  <nav id="sidebar" class="bg-dark">
+    <div class="p-4 pt-5">
+      <h5 class="text-center">Menu</h5>
+      <ul class="list-unstyled components mb-5">
+        <li><a class="nav-link" href="{% url 'core:dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a class="nav-link" href="{% url 'hr:employee_list' %}"><i class="fas fa-users"></i> HR</a></li>
+        <li><a class="nav-link" href="{% url 'inventory:item_list' %}"><i class="fas fa-boxes"></i> Inventory</a></li>
+        <li><a class="nav-link" href="{% url 'reports:report_list' %}"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        <li><a class="nav-link" href="{% url 'users:user_list' %}"><i class="fas fa-user"></i> Users</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div id="content" class="w-100">
+    <div class="container-fluid">
+      <h2>Dashboard</h2>
+      <p>Welcome to the Dental Center Management System Dashboard.</p>
+      
+      <!-- Interactive Collapsible Accordion -->
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Latest Updates
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>Updates will be shown here.</strong> This is an example of a collapsible menu item.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Notifications
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>Notifications will be shown here.</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Dynamic Chart Example using Chart.js -->
+      <div class="mt-4">
+        <canvas id="myChart" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Sidebar toggle functionality
+  document.getElementById('sidebarCollapse').addEventListener('click', function () {
+    document.getElementById('sidebar').classList.toggle('sidebar-collapsed');
+  });
+
+  // Example Dynamic Chart with Chart.js
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+          datasets: [{
+              label: 'Patient Visits',
+              data: [12, 19, 3, 5, 2, 3],
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+</script>
+{% endblock %}
